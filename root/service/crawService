@@ -1,0 +1,46 @@
+// 爬虫模块 2018/07
+'use strict'
+const co = require('co')
+const CrawDao = require('../dao/crawDao')
+
+// 保存商品数据
+exports.saveGoodsDocToDB = (saveDoc) => {
+  return co(function *() {
+    let result = yield CrawDao.addGoods(saveDoc)
+    return {
+      code: 0,
+      data: result
+    }
+  })
+}
+// 更新商品
+exports.updateGoodsDocFromDB = (saveDoc) => {
+  return co(function *() {
+    let result = yield CrawDao.updateGoodsDocFromDB(saveDoc)
+    return {
+      code: 0,
+      data: result
+    }
+  })
+}
+
+// 获取商品详情
+exports.getGoodsDetailMsg = (goodsId) => {
+  return co(function *() {
+    let result = yield CrawDao.getGoodsDetailMsg(goodsId)
+    return {
+      code: 0,
+      data: result
+    }
+  })
+}
+
+// 获取商品更新时间
+exports.getGoodsUpdateTime = (gMap) => {
+  return co(function *() {
+    return {
+      code: 0,
+      data: (new Date()).getTime() - 31 * 24 * 3600 * 1000
+    }
+  })
+}
