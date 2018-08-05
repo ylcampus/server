@@ -29,15 +29,17 @@ module.exports = class dir {
   }
 
   // 读取日志文件
-  readFile (logpath, cb) {
-    fs.readFile(logpath, function (err, data) {
-      if (err) {
-        cb(err)
-      } else {
-        let str = data.toString('utf8').trim()
-        let backStr = str.substring(0, str.length - 1)
-        cb(err, backStr)
-      }
+  readFile (logpath) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(logpath, function (err, data) {
+        if (err) {
+          reject(err)
+        } else {
+          let str = data.toString('utf8').trim()
+          let backStr = str.substring(0, str.length - 1)
+          resolve(backStr)
+        }
+      })
     })
   }
 

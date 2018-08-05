@@ -36,5 +36,5 @@ exports.updateGoodsDocFromDB = (map) => {
 
 // 获取商品详情
 exports.getGoodsDetailMsg = (goodsId) => {
-  return goodsModel.findOne({goodsId: goodsId}, 'goodsId timeStamp title')
+  return goodsModel.findOne({goodsId: goodsId}, 'goodsId timeStamp title pics')
 }

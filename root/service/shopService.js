@@ -10,6 +10,7 @@ const sha256 = require('js-sha256')
 const ShopDao = require('../dao/shopDao')
 const setting = require('../../bin/setting')
 const Craw = require('../libs/craw')
+const Log = require('../libs/log')
 // 添加店铺
 exports.addShop = (req) => {
   return co(function *() {
@@ -170,11 +171,12 @@ exports.crawData = (req) => {
 // 获取执行日志数据
 exports.getCrawLogData = (req) => {
   return co(function *() {
+    let crawLog = new Log()
+    let result = yield crawLog.readFile('static/craw/craw.txt')
+    let arr = JSON.parse('[' + result + ']')
     return {
-      code: 0,
-      data: {
-        name: 'dongjiguo'
-      }
+      rows: arr,
+      total: arr.length
     }
   })
 }
