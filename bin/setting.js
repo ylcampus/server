@@ -1,7 +1,6 @@
 // 系统配置
 module.exports = {
-  // host: '192.168.1.15', // 主机名
-  host: '127.0.0.1', // 主机名
+  host: '192.168.1.4', // 主机名
   port: 5566, // 端口
   cookieSecret: 'ulexy', // cookie秘钥
   maxAge: 60 * 60 * 1000, // 过期时间1小时
@@ -12,8 +11,9 @@ module.exports = {
   rootStatisDir: 'static',
   validTime: 30 * 60 * 1000, // 验证码失效时间-半小时
   defaultPwd: 'ule@1234', // 用户初始密码
+  crawPwd: 'craw@123', // 爬虫校验密码
   db: { // mongodb相关设置
-    domain: 'mongodb://127.0.0.1:27017/ule',
-    iam: 'mongodb://127.0.0.1:27017/iam'
+    domain: 'mongodb://localhost:27017/ule',
+    iam: 'mongodb://localhost:27017/iam'
   }
 }

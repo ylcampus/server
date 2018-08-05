@@ -48,6 +48,8 @@ module.exports = {
     apiShopEditShop: [1, 0, 0, 0], // 编辑店铺
     apiShopShopDetail: [1, 0, 0, 0], // 获取店铺详情
     apiShopShopList: [1, 0, 0, 0], // 获取店铺列表
+    apiShopCrawData: [1, 0, 0, 0], // 爬取商品
+    apiShopGetCrawLogData: [1, 0, 0, 0], // 获取执行日志数据
     // 角色管理
     apiRoleAddRole: [1, 0, 0, 0], // 添加角色
     apiRoleDeleteRole: [1, 0, 0, 0], // 删除角色

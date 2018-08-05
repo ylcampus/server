@@ -6,8 +6,10 @@
 * */
 'use strict'
 const co = require('co')
+const sha256 = require('js-sha256')
 const ShopDao = require('../dao/shopDao')
-
+const setting = require('../../bin/setting')
+const Craw = require('../libs/craw')
 // 添加店铺
 exports.addShop = (req) => {
   return co(function *() {
@@ -121,5 +123,58 @@ exports.shopList = (req) => {
       total: total
     }
     return backMap
+  })
+}
+
+// 爬取商品
+exports.crawData = (req) => {
+  return co(function *() {
+    const pwd = req.body.pwd
+    const shopId = req.body.shopId
+    const isRuning = Craw.ShopObj.isRuning
+    // 参数校验
+    if (!pwd || !shopId) {
+      let err = new Error('参数错误')
+      err.code = 'shop.err400001'
+      throw err
+    }
+    // 检测是否有运行中的爬虫任务
+    if (isRuning) {
+      let err = new Error('爬虫程序已经启动')
+      err.code = 'shop.err400005'
+      throw err
+    }
+    // 密码校验
+    if (pwd !== sha256(setting.crawPwd)) {
+      let err = new Error('密码错误')
+      err.code = 'shop.err400006'
+      throw err
+    }
+    // 获取店铺详细信息
+    let shopMsg = yield ShopDao.getShopDetail(shopId)
+    let hostname = shopMsg.host
+    let skuid = shopMsg.skuId
+    Craw.ShopObj.crawShopData(hostname, shopId, skuid).then((res) => {
+      if (res.code * 1 === 0) {
+        console.log('爬虫对象初始化')
+        Craw.ShopObj.init()
+      }
+    })
+    return {
+      code: 0,
+      data: null
+    }
+  })
+}
+
+// 获取执行日志数据
+exports.getCrawLogData = (req) => {
+  return co(function *() {
+    return {
+      code: 0,
+      data: {
+        name: 'dongjiguo'
+      }
+    }
   })
 }

@@ -5,11 +5,10 @@ let Craw = require('./root/libs/craw')
 let hostname = 'mizuno.m.tmall.com'
 let shopId = '62193774'
 let skuid = '451024527'
-let ShopObj = new Craw.Shop()
 // _getOption
 // 考虑一下到底应该怎样处理 ？
 co(function *() {
-  let result = yield ShopObj.crawShopData(hostname, shopId, skuid)
+  let result = yield Craw.ShopObj.crawShopData(hostname, shopId, skuid)
   if (result.code * 1 === 0) {
     console.log('爬取店铺商品成功')
     console.log(result.data)

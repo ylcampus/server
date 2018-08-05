@@ -61,4 +61,24 @@ router.get('/shopList', (req, res, next) => {
   })
 })
 
+// 爬取商品
+router.post('/crawData', (req, res, next) => {
+  co(function *() {
+    let result = yield ShopService.crawData(req)
+    res.status(200).send(Result.setData(result))
+  }).catch((err) => {
+    next(err)
+  })
+})
+
+// 获取执行日志数据
+router.post('/getCrawLogData/:shopId', (req, res, next) => {
+  co(function *() {
+    let result = yield ShopService.getCrawLogData(req)
+    res.status(200).send(Result.setData(result))
+  }).catch((err) => {
+    next(err)
+  })
+})
+
 module.exports = router

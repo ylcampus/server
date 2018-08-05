@@ -28,7 +28,7 @@ module.exports = new mongoose.Schema({
     required: true,
     enum: [1, 2]
   },
-  updateStatus: { // 更新状态 1：新增 2：更新成功；3：更新失败
+  updateStatus: { // 更新状态 1：新增 2：更新成功；3：更新失败 这个地方需要修改
     type: Number,
     required: true,
     enum: [1, 2, 3]

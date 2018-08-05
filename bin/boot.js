@@ -19,6 +19,7 @@ const setting = require('./setting')
 const router = require('../root/router')
 const filter = require('../root/libs/filter')
 const init = require('./init')
+require('../root/libs/socket') // socket服务
 // 设置静态资源文件路径
 app.use(express.static(process.env.root + '/dist'))
 // 设置模板引擎

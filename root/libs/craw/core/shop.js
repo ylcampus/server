@@ -10,6 +10,7 @@ const Goods = require('./goods')
 const Emitter = require('../emitter')
 // 构造函数
 let ShopClass = function () {
+  this.isRuning = false
   this.shopName = '--' // 店铺名称
   this.totalPage = 0 // 总页数
   this.currentPage = 1 // 当前页
@@ -172,7 +173,6 @@ let _getShopGoodsMsg = (hostname, shopId, suid) => {
 
 // 爬取商品列表数据
 ShopClass.prototype._crawGoodsList = function (hostname, shopId, suid) {
-  let self = this
   return new Promise((resolve) => {
     co(function *() {
       // const totalPage = self.totalPage
@@ -184,12 +184,10 @@ ShopClass.prototype._crawGoodsList = function (hostname, shopId, suid) {
         yield util.delay(time)
         let pageResult = yield _crawPageData(hostname, shopId, suid, i)
         let target = pageResult.data
-        let emitPageMap = self.getEmitMap()
-        util.emitMsg('craw', {...emitPageMap, ...{flag: 'page', currentPage: i}})
         if (pageResult.code * 1 === 0 && target) {
           let items = target.items || []
-          // for (let j = 0; j < items.length; j++) {
-          for (let j = 0; j < 3; j++) {
+          for (let j = 0; j < items.length; j++) {
+          // for (let j = 0; j < 3; j++) {
             let map = {
               goodsId: items[j].item_id,
               currentPage: i
@@ -241,6 +239,7 @@ ShopClass.prototype._crawGoodsDetailData = function (hostname, goodsId) {
         } else { // 新增商品
           let addResult = yield GoodsObj.crawGoodsData(hostname, goodsId)
           if (addResult.code === 0) {
+            self.goodsName = addResult.data.title || ''
             self.addSuccess++ // 新增成功
             execStatus = 4
           } else if (addResult.code === -1) {
@@ -281,10 +280,29 @@ ShopClass.prototype.getEmitMap = function () {
   }
 }
 
+// 初始化
+ShopClass.prototype.init = function () {
+  this.isRuning = false
+  this.shopName = '--'
+  this.totalPage = 0
+  this.currentPage = 1
+  this.pageSize = 24
+  this.totalResults = 0
+  this.goodsName = '--'
+  this.timeStamp = (new Date()).getTime()
+  this.updateSuccess = 0
+  this.updateFailed = 0
+  this.notUpdate = 0
+  this.addSuccess = 0
+  this.addFailed = 0
+  this.execStatus = null
+}
+
 // 爬取店铺所有商品数据
 ShopClass.prototype.crawShopData = function (hostname, shopId, skuid) {
   let self = this
   Emitter.onEmitter() // 添加监听器
+  this.isRuning = true
   return new Promise((resolve) => {
     co(function *() {
       let emitStartMap = self.getEmitMap()
@@ -320,7 +338,7 @@ ShopClass.prototype.crawShopData = function (hostname, shopId, skuid) {
         util.emitMsg('craw', {...emitEndMap, ...{flag: 'end'}})
         resolve({
           code: 0,
-          data: emitMap
+          data: 'success'
         })
       }
     }).catch((err) => {

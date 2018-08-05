@@ -1,0 +1,14 @@
+// const wss = require('./root/libs/socket')
+// wss.on('connection', function (ws, req) {
+//   console.log('总连接数：' + wss.clients.size)
+// })
+// WSS.on('close', function (ws) {
+//   console.log('已断开websocket连接')
+// })
+
+// wss.clients.forEach((row) => {
+//   if (row === ws) {
+//
+//   }
+// })
+// ws.send(JSON.stringify({name: 'dongjiguo'}))
